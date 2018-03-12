@@ -23,7 +23,6 @@ public class Henry {
 		f.setBounds(0, 0, jFrameWidth, jFrameHeight);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		
-        
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.setSize(jFrameWidth, jFrameHeight);
 		tabbedPane.setBounds(0, 0, jFrameWidth, jFrameHeight);
@@ -41,7 +40,6 @@ public class Henry {
 		tabbedPane.addTab("Search by Category", category);
 
 //		tabbedPane.setOpaque(true);
-		tabbedPane.setFont(new Font("Serif", Font.BOLD, 50));
 		f.add(tabbedPane);
 //		f.pack();
 		f.setVisible(true);
