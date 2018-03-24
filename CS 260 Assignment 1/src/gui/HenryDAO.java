@@ -61,7 +61,7 @@ public class HenryDAO {
 		
 		try {
 			stmt = conn.createStatement();
-			String sql = "SELECT AUTHOR_NUM, AUTHOR_FIRST, AUTHOR_LAST FROM HENRY_AUTHOR WHERE AUTHOR_";
+			String sql = "SELECT AUTHOR_NUM, AUTHOR_FIRST, AUTHOR_LAST FROM HENRY_AUTHOR";
 			rs = stmt.executeQuery(sql);
 //			Use the result set
 			int i = 0;
@@ -69,6 +69,7 @@ public class HenryDAO {
 //				Access field values in the current row using the column name
 				authorIds[i] = rs.getInt("AUTHOR_NUM");
 				String author_name = rs.getString("AUTHOR_FIRST") + " " + rs.getString("AUTHOR_LAST");
+				System.out.println(author_name);
 				i++;
 			} 
 			
