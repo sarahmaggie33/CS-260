@@ -1,5 +1,6 @@
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class HenryDAO {
 	static final String DB_URL = "jdbc:oracle:thin:@dario.cs.uwec.edu:1521:csdev";
@@ -13,8 +14,7 @@ public class HenryDAO {
 
 
 
-	public ArrayList getBookData()
-	{
+	public ArrayList getBookData() {
 		ArrayList<String> arr = new ArrayList<>();
 		try {
 			//Open a connection to the database
@@ -29,7 +29,7 @@ public class HenryDAO {
 			while(rs.next()) {
 				String s = rs.getString("title");
 				arr.add(s);
-				System.out.println(s);
+//				System.out.println(s);
 			}
 		} catch(SQLException sqle) {
 			sqle.printStackTrace();
@@ -38,8 +38,7 @@ public class HenryDAO {
 	}
 
 // 1st dropdown
-	public ArrayList getAuthorData()
-	{
+	public ArrayList getAuthorData() {
 		ArrayList<String> arr = new ArrayList<>();
 
 		try {
@@ -48,14 +47,14 @@ public class HenryDAO {
 
 			//Execute a query
 			stmt = conn.createStatement();
-			String sql = "select author_last from henry_author";
+			String sql = "select unique author_last from henry_author where author_num in (select unique author_num from henry_wrote)";
 			rs = stmt.executeQuery(sql);
 
 			//Loops through the result set
 			while(rs.next()) {
 				String s = rs.getString("author_last");
 				arr.add(s);
-				System.out.println(s);
+//				System.out.println(s);
 			}
 		} catch(SQLException sqle) {
 			sqle.printStackTrace();
@@ -80,7 +79,7 @@ public class HenryDAO {
 			while(rs.next()) {
 				String s = rs.getString("title");
 				arr.add(s);
-				System.out.println(s);
+//				System.out.println(s);
 			}
 		} catch(SQLException sqle) {
 			sqle.printStackTrace();
@@ -105,7 +104,7 @@ public class HenryDAO {
 			while(rs.next()) {
 				String s = rs.getString("type");
 				arr.add(s);
-				System.out.println(s);
+//				System.out.println(s);
 			}
 		} catch(SQLException sqle) {
 			sqle.printStackTrace();
@@ -130,7 +129,7 @@ public class HenryDAO {
 			while(rs.next()) {
 				String s = rs.getString("title");
 				arr.add(s);
-				System.out.println(s);
+//				System.out.println(s);
 			}
 		} catch(SQLException sqle) {
 			sqle.printStackTrace();
@@ -148,14 +147,14 @@ public class HenryDAO {
 
 			//Execute a query
 			stmt = conn.createStatement();
-			String sql = "select unique publisher_name henry_publisher";
+			String sql = "select unique publisher_name from henry_publisher";
 			rs = stmt.executeQuery(sql);
 
 			//Loops through the result set
 			while(rs.next()) {
 				String s = rs.getString("publisher_name");
 				arr.add(s);
-				System.out.println(s);
+//				System.out.println(s);
 			}
 		} catch(SQLException sqle) {
 			sqle.printStackTrace();
@@ -173,14 +172,14 @@ public class HenryDAO {
 
 			//Execute a query
 			stmt = conn.createStatement();
-			String sql = "select title where publisher_code = (select publisher_code from henry_publisher where publisher_name = '" + a + "')";
+			String sql = "select title from henry_book where publisher_code = (select publisher_code from henry_publisher where publisher_name = '" + a + "')";
 			rs = stmt.executeQuery(sql);
 
 			//Loops through the result set
 			while(rs.next()) {
 				String s = rs.getString("title");
 				arr.add(s);
-				System.out.println(s);
+//				System.out.println(s);
 			}
 		} catch(SQLException sqle) {
 			sqle.printStackTrace();
@@ -213,22 +212,22 @@ public class HenryDAO {
 
 	}
 	
-	public ArrayList authorBookstore(String a) {
-		ArrayList<String> arr = new ArrayList<>();
+	public Vector<String> authorBookstore(String a) {
+		Vector<String> arr = new Vector<>();
 		try {
 			//Open a connection to the database
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 			//Execute a query
 			stmt = conn.createStatement();
-			String sql = "select branch_name from henry_branch where branch_num in (select branch_num from henry_inventory where book_code in (select book_code from henry_branch where book_code in (select book_code from henry_wrote where author_num = (select author_num from henry_author where author_last = '" + a + "')))) and branch_num in (select branch_num from henry_branch)";
+			String sql = "select branch_name from henry_branch where branch_num in (select branch_num from henry_inventory where book_code in (select book_code from henry_book where title = '" + a + "'))";
 			rs = stmt.executeQuery(sql);
 
 			//Loops through the result set
 			while(rs.next()) {
 				String s = rs.getString("branch_name");
 				arr.add(s);
-				System.out.println(s);
+//				System.out.println(s);
 			}
 			
 			
@@ -238,22 +237,22 @@ public class HenryDAO {
 		return arr;
 	}
 
-	public ArrayList authorNBooks(String a) {
-		ArrayList<String> nBooks = new ArrayList<>();
+	public Vector<String> authorNBooks(String a) {
+		Vector<String> nBooks = new Vector<>();
 		try {
 			//Open a connection to the database
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 			//Execute a query
 			stmt = conn.createStatement();
-			String sql = "select on_hand from henry_inventory where book_code in (select book_code from henry_branch where book_code in (select book_code from henry_wrote where author_num = (select author_num from henry_author where author_last = '" + a + "'))) and branch_num in (select branch_num from henry_branch)";
+			String sql = "select on_hand from henry_inventory where book_code in (select book_code from henry_book where title = '" + a + "')";
 			rs = stmt.executeQuery(sql);
 
 			//Loops through the result set
 			while(rs.next()) {
 				String s = rs.getString("on_hand");
 				nBooks.add(s);
-				System.out.println(s);
+//				System.out.println(s);
 			}
 			
 		} catch(SQLException sqle) {

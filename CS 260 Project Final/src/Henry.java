@@ -23,17 +23,20 @@ public class Henry {
 		
 		//Tab 1
 		JPanel author = new JPanel();
+		author.setBackground(Color.blue);
 		author.add(SearchByAuthorPanel.author());
 		tabbedPane.addTab("Search by Author", author);
 
 		
 		//Tab 2
 		JPanel category = new JPanel();
+		category.setBackground(Color.magenta);
 		category.add(SearchByCategoryPanel.category());
 		tabbedPane.addTab("Search by Category", category);
 
 		//Tab3
 		JPanel publisher = new JPanel();
+		publisher.setBackground(Color.green);
 		publisher.add(SearchByPublisherPanel.publisher());
 		tabbedPane.addTab("Search by Publisher", publisher);
 
